@@ -1,72 +1,65 @@
-import { useState } from 'react';
-import './index.css'
+import { useState, useRef } from 'react';
+import './index.css';
+import { generatePattern, createHint, convertIndexToColor } from '../game_model/index.jsx';
+import { HistorySection, SquareRow, SubmitButton } from './view_components.jsx';
 
-function Square({ color, onSquareClick }) {
-
-    return (
-        <button 
-            className='square' 
-            onClick={onSquareClick}
-            style={{backgroundColor: color}}
-        >
-        </button>
-    );
-}
-
-export default function View() {
+export default function Game() {
 
     const [rowColors, setRowColors] = useState(Array(4).fill("white"));
     const [rowColorsIndex, setRowColorsIndex] = useState(Array(4).fill(0));
+    const [colorsHistory, setColorsHistory] = useState(Array);
+    const [hintNumbers, setHintNumbers] = useState(Array);
+    const correctPattern = useRef(Array(4).fill(0));
 
-    const handleClick = (i) => {
+    if (correctPattern.current[0] == 0) {
+        correctPattern.current = generatePattern();
+        console.log("Generated pattern: " + correctPattern.current);
+    }
+
+    const handleSquaresClick = (i) => {
 
         const nextRowColorsIndex = rowColorsIndex.slice();
         nextRowColorsIndex[i] += 1;
         if (nextRowColorsIndex[i] > 6) {
             nextRowColorsIndex[i] = 1;
         }
-        setRowColorsIndex(nextRowColorsIndex);
-        console.log("Color index on clicked square is " + nextRowColorsIndex[i]);
-
         const nextRowColors = rowColors.slice();
-        switch (nextRowColorsIndex[i]) {
-            case 0:
-                nextRowColors[i] = "white";
-                break;
-            case 1:
-                nextRowColors[i] = "red";
-                break;
-            case 2:
-                nextRowColors[i] = "orange";
-                break;
-            case 3:
-                nextRowColors[i] = "yellow";
-                break;
-            case 4:
-                nextRowColors[i] = "green";
-                break;
-            case 5:
-                nextRowColors[i] = "blue";
-                break;
-            case 6:
-                nextRowColors[i] = "purple";
-                break;
-            default:
-                console.error("rowColorsIndex reached an unexpected state");
-        }
-        
+        nextRowColors[i] = convertIndexToColor(nextRowColorsIndex[i]);
+
+        setRowColorsIndex(nextRowColorsIndex);
         setRowColors(nextRowColors);
+    }
+
+    function handleSubmit(guess, pattern, guessColors) {
+
+        if (guess == null || pattern == null || guessColors == null) {
+            console.error("Function handleSubmit received null arguments");
+            return;
+        }
+        if (guess.some(v => v === 0)) {
+            console.log("Invalid guess. Make sure all squares have a color.");
+            return;
+        }
+        // Further checks: check if pattern is valid; check if guess and pattern are the same length, etc.
+
+        const newHintNumbers = createHint(guess, pattern);
+        const nextHintNumbers = [...hintNumbers, newHintNumbers];
+        const nextColorsHistory = [...colorsHistory, guessColors];
+        setHintNumbers(nextHintNumbers);
+        setColorsHistory(nextColorsHistory);
     }
 
     return (
         <>
-        <div className='guess-bar'>
-            <div className='square-row'>
-                {rowColors.map((color, index) => (
-                    <Square key={index} color={color} onSquareClick={() => handleClick(index)} />
-                ))}
+            <div className='guess-bar'>
+                <SquareRow colors={rowColors} onRowClick={handleSquaresClick} />
+                <div className='submit-button'>
+                    <SubmitButton onSubmitClick={() => { handleSubmit(rowColorsIndex, correctPattern.current, rowColors) }} />
+                </div>
             </div>
-        </div>
+            <div className='history'>
+                <HistorySection colorsHistory={colorsHistory} hintNumbers={hintNumbers} />
+            </div>
         </>
     );
 }

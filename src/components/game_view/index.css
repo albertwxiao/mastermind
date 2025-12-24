@@ -1,26 +1,30 @@
 .square {
     border-style: solid;
     border-color: black;
-    border-width: 2px;
+    border-width: 1px;
     height: 64px;
     width: 64px;
 }
 
 .square-row {
+    width: 256px;
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 12px;
-    
+    padding-top: 0px;
     
 }
 
 .guess-bar {
     position: fixed;
-    padding: 16px;
+    padding: 20px;
     justify-content: center;
     align-items: center;
-    margin-left: -28px;
+    margin-left: -24px;
+    display: grid;
 
     top: 0px;
     height: 150px;
@@ -29,4 +33,43 @@
     background-color: aliceblue;
     border: 3px solid green;
 
+}
+
+.submit-button {
+    padding: 8px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.history {
+    margin-top: 200px;
+    padding: 20px;
+}
+
+.history-row {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.num-correct-place {
+    height: 64px;
+    width: 64px;
+    background-color: greenyellow;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 24px;
+    margin-left: 10px;
+}
+
+.num-incorrect-place {
+    height: 64px;
+    width: 64px;
+    background-color: yellow;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 24px;
 }

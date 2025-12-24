@@ -1,13 +1,20 @@
-import { useState } from 'react'
+import {
+  BrowserRouter as Router, Routes, Route, Link
+} from "react-router-dom"
 import './App.css'
-import View from './components/game_view/index.jsx'
+import Game from './components/game_view/index.jsx'
+import Home from './components/home/index.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <View />
+      <Router>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="game" element={<Game />} />
+        </Routes>
+      </Router>
     </>
   )
 }
