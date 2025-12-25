@@ -73,3 +73,10 @@
     display: flex;
     font-size: 24px;
 }
+
+.win-message {
+    position: fixed;
+    top: 150px;
+    font-size: 24px;
+
+}

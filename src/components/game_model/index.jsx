@@ -32,7 +32,7 @@ export function createHint(guessInput, patternInput) {
 
     for (let i = 0; i < guess.length; i++) {
         for (let j = 0; j < pattern.length; j++) {
-            if (guess[i] == pattern[j]) {
+            if (guess[i] === pattern[j]) {
                 numWrongPlace++;
                 pattern.splice(j, 1);
                 break;
@@ -41,6 +41,21 @@ export function createHint(guessInput, patternInput) {
     }
 
     return ([numCorrectPlace, numWrongPlace]);
+}
+
+export function decideGameWin(hintNumbers) {
+    if (hintNumbers === null) {
+        return false;
+    }
+    if (hintNumbers.length === 0) {
+        return false;
+    }
+
+    if (hintNumbers[hintNumbers.length - 1][0] === 4) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 export function convertIndexToColor(i) {

@@ -35,6 +35,17 @@ export function SubmitButton({ onSubmitClick }) {
     );
 }
 
+export function WinMessage({ hasWon }) {
+    if (hasWon === true) {
+        return (
+            <>You won!</>
+        );
+    } else {
+        return;
+    }
+    
+}
+
 function HistoryRow({ mergedRow }) {
     return (
         <div className='history-row'>

@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import './index.css';
-import { generatePattern, createHint, convertIndexToColor } from '../game_model/index.jsx';
-import { HistorySection, SquareRow, SubmitButton } from './view_components.jsx';
+import { generatePattern, createHint, decideGameWin, convertIndexToColor } from '../game_model/index.jsx';
+import { HistorySection, SquareRow, SubmitButton, WinMessage } from './view_components.jsx';
 
 export default function Game() {
 
@@ -10,6 +10,7 @@ export default function Game() {
     const [colorsHistory, setColorsHistory] = useState(Array);
     const [hintNumbers, setHintNumbers] = useState(Array);
     const correctPattern = useRef(Array(4).fill(0));
+    const gameWin = decideGameWin(hintNumbers);
 
     if (correctPattern.current[0] == 0) {
         correctPattern.current = generatePattern();
@@ -32,6 +33,9 @@ export default function Game() {
 
     function handleSubmit(guess, pattern, guessColors) {
 
+        if (gameWin === true) {
+            return;
+        }
         if (guess == null || pattern == null || guessColors == null) {
             console.error("Function handleSubmit received null arguments");
             return;
@@ -56,6 +60,9 @@ export default function Game() {
                 <div className='submit-button'>
                     <SubmitButton onSubmitClick={() => { handleSubmit(rowColorsIndex, correctPattern.current, rowColors) }} />
                 </div>
+            </div>
+            <div className='win-message'>
+                <WinMessage hasWon={gameWin} />
             </div>
             <div className='history'>
                 <HistorySection colorsHistory={colorsHistory} hintNumbers={hintNumbers} />
