@@ -35,10 +35,10 @@ export function SubmitButton({ onSubmitClick }) {
     );
 }
 
-export function WinMessage({ hasWon }) {
-    if (hasWon === true) {
+export function StatusMessage({ message }) {
+    if (message) {
         return (
-            <>You won!</>
+            <>{message}</>
         );
     } else {
         return;
