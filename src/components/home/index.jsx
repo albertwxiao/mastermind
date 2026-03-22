@@ -9,6 +9,9 @@ function Home() {
             <h2>
                 <Link to="/game">Play Game</Link>
             </h2> 
+            <h2>
+                <Link to="/howtoplay">How to Play</Link>
+            </h2>
         </div>
     );
 }
