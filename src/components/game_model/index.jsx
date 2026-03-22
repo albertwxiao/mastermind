@@ -51,11 +51,11 @@ export function decideGameWin(hintNumbers) {
         return false;
     }
 
-    if (hintNumbers[hintNumbers.length - 1][0] === 4) {
-        return true;
-    } else {
-        return false;
-    }
+    return (hintNumbers[hintNumbers.length - 1][0] === 4);
+}
+
+export function decideGameLose(numAttempts) {
+    return (numAttempts >= 12);
 }
 
 export function convertIndexToColor(i) {

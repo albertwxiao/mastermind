@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import './index.css';
-import { generatePattern, createHint, decideGameWin, convertIndexToColor } from '../game_model/index.jsx';
+import { generatePattern, createHint, decideGameWin, decideGameLose, convertIndexToColor } from '../game_model/index.jsx';
 import { HistorySection, SquareRow, SubmitButton, StatusMessage } from './view_components.jsx';
 
 export default function Game() {
@@ -11,6 +11,7 @@ export default function Game() {
     const [hintNumbers, setHintNumbers] = useState(Array);
     const correctPattern = useRef(Array(4).fill(0));
     const gameWin = decideGameWin(hintNumbers);
+    const gameLose = decideGameLose(colorsHistory.length);
     const [statusMessage, setStatusMessage] = useState("");
 
     if (correctPattern.current[0] == 0) {
@@ -34,7 +35,7 @@ export default function Game() {
 
     function handleSubmit(guess, pattern, guessColors) {
 
-        if (gameWin === true) {
+        if (gameWin || gameLose) {
             return;
         }
         if (guess == null || pattern == null || guessColors == null) {
@@ -47,8 +48,7 @@ export default function Game() {
             setStatusMessage("Make sure all squares have a color");
             return;
         }
-        setStatusMessage("");
-        // Further checks: check if pattern is valid; check if guess and pattern are the same length, etc.
+        // Assert guess and pattern are the same length?
 
         const newHintNumbers = createHint(guess, pattern);
         const nextHintNumbers = [...hintNumbers, newHintNumbers];
@@ -58,6 +58,12 @@ export default function Game() {
 
         if (decideGameWin(nextHintNumbers) === true) {
             setStatusMessage("You won!");
+        } 
+        else if (decideGameLose(nextColorsHistory.length)) {
+            setStatusMessage("You lost!");
+        }
+        else {
+            setStatusMessage(nextColorsHistory.length + "/12");
         }
 
     }
