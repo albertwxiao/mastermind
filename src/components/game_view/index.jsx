@@ -12,7 +12,7 @@ export default function Game() {
     const correctPattern = useRef(Array(4).fill(0));
     const gameWin = decideGameWin(hintNumbers);
     const gameLose = decideGameLose(colorsHistory.length);
-    const [statusMessage, setStatusMessage] = useState("");
+    const [statusMessage, setStatusMessage] = useState(<></>);
 
     if (correctPattern.current[0] == 0) {
         correctPattern.current = generatePattern();
@@ -57,13 +57,13 @@ export default function Game() {
         setColorsHistory(nextColorsHistory);
 
         if (decideGameWin(nextHintNumbers) === true) {
-            setStatusMessage("You won!");
+            setStatusMessage(<>You won! <a href='game'>Play again</a></>);
         } 
         else if (decideGameLose(nextColorsHistory.length)) {
-            setStatusMessage("You lost!");
+            setStatusMessage(<>You lost! <a href='game'>Play again</a></>);
         }
         else {
-            setStatusMessage(nextColorsHistory.length + "/12");
+            setStatusMessage("Attempt " + nextColorsHistory.length + "/12");
         }
 
     }
